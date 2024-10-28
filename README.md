@@ -1,0 +1,2 @@
+# mystickers
+ Stickers App
