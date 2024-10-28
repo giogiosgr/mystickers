@@ -8,11 +8,59 @@
 	<main class="container">
 		<div class="row">
 
-			
+			<div class="col-6">
+				<th:block th:each="sticker : ${stickers}">
+					<div class="card text-bg-success p-1 mx-4 my-3">
+						<div class="card-body">
+							<h4 class="card-title pb-1 border-bottom" th:text="${sticker.getFormattedCreatedAt}">
+							</h4>
+							<p class="card-text my-3" th:text="${sticker.text}"></p>
+							<p class="card-text my-2 fs-6 fst-italic text-end"
+								th:text="'Edited on: ${sticker.getFormattedUpdatedAt}"></p>
+							<div class="d-flex justify-content-end">
+								<form th:action="@{'/stickers/edit/{id}'(id=${sticker.id})}" method="get">
+									<button type="submit" class="btn btn-sm btn-warning m-1" title="Edit"><i
+											class="fas fa-edit"></i></button>
+								</form>
+								<!-- Button trigger modal -->
+								<button type="button" class="btn btn-sm btn-danger m-1" title="Delete"
+									data-bs-toggle="modal" th:data-bs-target="'#delete-sticker-' + ${sticker.id}">
+									<i class="fa-solid fa-trash"></i>
+								</button>
+							</div>
+							<!-- Modal -->
+							<div class="modal fade" th:id="'delete-sticker-' + ${sticker.id}" tabindex="-1"
+								aria-labelledby="exampleModalLabel" aria-hidden="true">
+								<div class="modal-dialog">
+									<div class="modal-content text-dark">
+										<div class="modal-header">
+											<h1 class="modal-title fs-5" id="exampleModalLabel">
+												Confirmation</h1>
+											<button type="button" class="btn-close" data-bs-dismiss="modal"
+												aria-label="Close"></button>
+										</div>
+										<div class="modal-body text-center">
+											Confirm deletion?
+										</div>
+										<div class="modal-footer">
+											<button type="button" class="btn btn-secondary"
+												data-bs-dismiss="modal">Retry</button>
+											<form class="d-inline-block"
+												th:action="@{/stickers/delete/{id}(id=${sticker.id})}" method="post">
+												<button class="btn btn-danger m-1" type="submit"
+													id="submitButton">Confirm</button>
+											</form>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</th:block>
+			</div>
 
 		</div>
 	</main>
-
 
 	<footer>
 		<th:block th:replace="~{fragments/fragments :: scripts}"></th:block>
