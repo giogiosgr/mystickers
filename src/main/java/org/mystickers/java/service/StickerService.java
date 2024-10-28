@@ -5,6 +5,7 @@ import java.util.List;
 import org.mystickers.java.model.Sticker;
 import org.mystickers.java.repo.StickerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import jakarta.validation.Valid;
@@ -21,9 +22,9 @@ public class StickerService {
 
 	}
 	
-	public List<Sticker> getAllOrderedByCreatedAt() {
+	public List<Sticker> getAllSorted(Sort sort) {
 
-		return stickerRepo.findAllOrderByCreatedAtDesc();
+		return stickerRepo.findAll(sort);
 
 	}
 

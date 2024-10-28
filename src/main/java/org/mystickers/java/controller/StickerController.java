@@ -3,7 +3,7 @@ package org.mystickers.java.controller;
 import org.mystickers.java.model.Sticker;
 import org.mystickers.java.service.StickerService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -26,8 +26,10 @@ public class StickerController {
 	// INDEX
 	@GetMapping()
 	public String index(Model model) {
+		
+		Sort sort = Sort.by("createdAt").descending();
 
-		model.addAttribute("stickers", stickerService.getAllOrderedByCreatedAt());
+		model.addAttribute("stickers", stickerService.getAllSorted(sort));
 
 		return "stickers/index";
 	}
