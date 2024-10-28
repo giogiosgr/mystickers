@@ -7,8 +7,11 @@
 
 	<main class="container">
 		<div class="row">
-
 			<div class="col-6">
+				<!-- Add Button -->
+				<a class="btn btn-primary me-4" th:href="@{stickers/create}" role="button"><span
+						class="fw-bold">+</span>Add Sticker</a>
+				<!-- Stickers List -->
 				<th:block th:each="sticker : ${stickers}">
 					<div class="card text-bg-success p-1 mx-4 my-3">
 						<div class="card-body">
@@ -58,7 +61,6 @@
 					</div>
 				</th:block>
 			</div>
-
 		</div>
 	</main>
 
