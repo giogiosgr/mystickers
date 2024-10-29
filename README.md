@@ -1,2 +1,2 @@
 # mystickers
- Stickers App
+Most basic stickers editor
