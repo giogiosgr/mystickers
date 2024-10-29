@@ -7,22 +7,41 @@
 
 	<main class="container">
 		<div class="row">
+			<!-- Add Button -->
+			<div class="col-2 mx-3 my-4">
+				<a class="btn btn-primary" th:href="@{/stickers/create}" role="button"><span class="fw-bold">+
+					</span>Add Sticker</a>
+			</div>
+			<!-- Search Input -->
+			<div class="col-6 my-4">
+				<form th:action="@{/stickers/search}" method="GET" class="col-8">
+					<div class="form-group row">
+						<div class="col-8">
+							<input name="text" type="text" class="form-control" id="title-input"
+								placeholder="Search by text">
+						</div>
+						<div class="col-4 ps-0">
+							<button type="submit" class="btn btn-success">Search</button>
+						</div>
+					</div>
+				</form>
+			</div>
+			<!-- success message -->
 			<div class="col-10">
-				<!-- Add Button -->
-				<a class="btn btn-primary mx-4 my-4" th:href="@{stickers/create}" role="button"><span
-						class="fw-bold">+ </span>Add Sticker</a>
-				<!-- success message -->
 				<th:block th:if="${successMessage != null}">
 					<div th:replace="~{fragments/fragments :: successAlert(${successMessage})}"></div>
 				</th:block>
+			</div>
+			<div class="col-sm-6 col-8 ms-3">
 				<!-- Stickers List -->
 				<th:block th:each="sticker : ${stickers}">
-					<div class="card text-bg-success p-1 mx-4 mb-3">
+					<div class="card text-bg-success p-1 mb-3">
 						<div class="card-body">
 							<h5 class="card-title pb-1 border-bottom" th:text="${sticker.getFormattedCreatedAt}">
 							</h5>
 							<p class="card-text my-3" th:text="${sticker.text}" style="white-space: pre-wrap;"></p>
-							<p th:if="${sticker.getFormattedCreatedAt} != ${sticker.getFormattedUpdatedAt}" class="card-text my-2 fs-6 fst-italic text-end"
+							<p th:if="${sticker.getFormattedCreatedAt} != ${sticker.getFormattedUpdatedAt}"
+								class="card-text my-2 fs-6 fst-italic text-end"
 								th:text="'Edited on: ' + ${sticker.getFormattedUpdatedAt}"></p>
 							<div class="d-flex justify-content-end">
 								<form th:action="@{'/stickers/edit/{id}'(id=${sticker.id})}" method="get">
@@ -65,6 +84,7 @@
 					</div>
 				</th:block>
 			</div>
+		</div>
 		</div>
 	</main>
 

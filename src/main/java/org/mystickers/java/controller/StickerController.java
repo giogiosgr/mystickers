@@ -3,7 +3,6 @@ package org.mystickers.java.controller;
 import org.mystickers.java.model.Sticker;
 import org.mystickers.java.service.StickerService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -12,6 +11,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import jakarta.validation.Valid;
@@ -26,12 +26,19 @@ public class StickerController {
 	// INDEX
 	@GetMapping()
 	public String index(Model model) {
-		
-		Sort sort = Sort.by("createdAt").descending();
 
-		model.addAttribute("stickers", stickerService.getAllSorted(sort));
+		model.addAttribute("stickers", stickerService.getAllSortedByIdDesc());
 
 		return "stickers/index";
+	}
+	
+	// SEARCH
+	@GetMapping("/search")
+	public String search(@RequestParam String text, Model model) {
+	
+	    model.addAttribute("stickers", stickerService.getByTextContainingOrderByIdDesc(text));
+	    
+	    return "stickers/index";
 	}
 
 	// CREATE

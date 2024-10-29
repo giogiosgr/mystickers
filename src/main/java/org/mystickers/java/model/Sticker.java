@@ -27,7 +27,7 @@ public class Sticker {
 	
 	@NotNull
 	@NotEmpty
-	@Size(min = 2, max = 5000)
+	@Size(min = 2, max = 30000)
 	@Column(name = "text", nullable = false, columnDefinition = "text")
 	private String text;
 	
