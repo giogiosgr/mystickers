@@ -8,17 +8,14 @@
 	<main class="container">
 		<div class="row">
 			<div class="col-sm-6 col-8">
-				<form id="note-form" th:object="${sticker}" th:action="@{/stickers/create}" method="POST">
+				<form id="note-form" th:action="@{/stickers/create}" enctype="multipart/form-data" method="POST">
 					<div class="my-3">
 						<label for="text" class="form-label fw-bold">Add sticker</label>
 						<textarea name="text" class="form-control" id="text" rows="5" required minlength="2"
-							maxlength="30000" th:field="*{text}" th:errorClass="is-invalid">
-						</textarea>
-						<div th:if="${#fields.hasErrors('text')}" class="invalid-feedback">
-							<ul>
-								<li th:each="err : ${#fields.errors('text')}" th:text="${err}"></li>
-							</ul>
-						</div>
+							maxlength="30000"></textarea>
+					</div>
+					<div class="mb-3">
+						<input class="mb-3" type="file" name="file">
 					</div>
 					<button type="submit" class="btn btn-primary m-2">Confirm</button>
 					<button type="reset" class="btn btn-primary m-2">Reset</button>

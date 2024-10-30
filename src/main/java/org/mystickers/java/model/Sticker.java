@@ -5,16 +5,14 @@ import java.time.format.DateTimeFormatter;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Lob;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 @Entity
@@ -25,8 +23,6 @@ public class Sticker {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	
-	@NotNull
-	@NotEmpty
 	@Size(min = 2, max = 30000)
 	@Column(name = "text", nullable = false, columnDefinition = "text")
 	private String text;
@@ -36,6 +32,11 @@ public class Sticker {
 
 	@UpdateTimestamp
 	private LocalDateTime updatedAt;
+	
+	@Lob
+    private byte[] file; 
+	
+	private String fileName;
 	
 	@Transient
 	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy' 'HH:mm");
@@ -82,4 +83,20 @@ public class Sticker {
 		this.updatedAt = updatedAt;
 	}
 
+	public byte[] getFile() {
+		return file;
+	}
+
+	public void setFile(byte[] file) {
+		this.file = file;
+	}
+	
+	public String getFileName() {
+		return fileName;
+	}
+
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
+	}
+	
 }

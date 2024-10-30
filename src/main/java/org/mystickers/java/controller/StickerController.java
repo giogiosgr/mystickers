@@ -1,20 +1,21 @@
 package org.mystickers.java.controller;
 
+import java.io.IOException;
+
 import org.mystickers.java.model.Sticker;
 import org.mystickers.java.service.StickerService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import jakarta.validation.Valid;
 
 @Controller
 @RequestMapping("/stickers")
@@ -31,14 +32,14 @@ public class StickerController {
 
 		return "stickers/index";
 	}
-	
+
 	// SEARCH
 	@GetMapping("/search")
 	public String search(@RequestParam String text, Model model) {
-	
-	    model.addAttribute("stickers", stickerService.getByTextContainingOrderByIdDesc(text));
-	    
-	    return "stickers/index";
+
+		model.addAttribute("stickers", stickerService.getByTextContainingOrderByIdDesc(text));
+
+		return "stickers/index";
 	}
 
 	// CREATE
@@ -52,14 +53,10 @@ public class StickerController {
 
 	// STORE
 	@PostMapping("/create")
-	public String store(@Valid @ModelAttribute("sticker") Sticker stickerForm, BindingResult bindingResult, Model model,
-			RedirectAttributes attributes) {
+	public String store(Model model, @RequestParam String text, @RequestParam MultipartFile file,
+			RedirectAttributes attributes) throws IOException {
 
-		if (bindingResult.hasErrors()) {
-			return "stickers/create";
-		}
-
-		stickerService.save(stickerForm);
+		stickerService.saveSticker(text, file);
 
 		attributes.addFlashAttribute("successMessage", "new sticker added");
 
@@ -77,14 +74,10 @@ public class StickerController {
 
 	// UPDATE
 	@PostMapping("/edit/{id}")
-	public String update(@Valid @ModelAttribute("sticker") Sticker stickerForm, BindingResult bindingResult,
-			Model model, RedirectAttributes attributes) {
+	public String update(@PathVariable int id, Model model, @RequestParam String text, @RequestParam MultipartFile file,
+			RedirectAttributes attributes) throws IOException {
 
-		if (bindingResult.hasErrors()) {
-			return "stickers/edit";
-		}
-
-		stickerService.save(stickerForm);
+		stickerService.updateSticker(stickerService.getById(id), text, file);
 
 		attributes.addFlashAttribute("successMessage", "sticker edited");
 
@@ -100,6 +93,17 @@ public class StickerController {
 		attributes.addFlashAttribute("successMessage", "sticker deleted");
 
 		return "redirect:/stickers";
+	}
+
+	// DOWNLOAD
+	@GetMapping("/download/{id}")
+	public ResponseEntity<byte[]> download(@PathVariable int id) {
+
+		Sticker sticker = stickerService.getById(id);
+
+		return ResponseEntity.ok()
+				.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + sticker.getFileName() + "\"")
+				.body(sticker.getFile());
 	}
 
 }
