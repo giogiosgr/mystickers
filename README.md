@@ -1,2 +1,2 @@
 # mystickers
-Most basic stickers editor
+Basic stickers editor, with attachments
