@@ -1,11 +1,13 @@
 package org.mystickers.java.controller;
 
 import java.io.IOException;
+import java.net.URLConnection;
 
 import org.mystickers.java.model.Sticker;
 import org.mystickers.java.service.StickerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -100,9 +102,17 @@ public class StickerController {
 	public ResponseEntity<byte[]> download(@PathVariable int id) {
 
 		Sticker sticker = stickerService.getById(id);
+		
+		String fileName = sticker.getFileName();
 
+		String mimeType = URLConnection.guessContentTypeFromName(fileName);
+		if (mimeType == null) {
+		    mimeType = MediaType.APPLICATION_OCTET_STREAM_VALUE;
+		}
+		
 		return ResponseEntity.ok()
-				.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + sticker.getFileName() + "\"")
+				.contentType(MediaType.parseMediaType(mimeType))
+				.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileName + "\"")
 				.body(sticker.getFile());
 	}
 
