@@ -11,7 +11,7 @@
 				<form id="note-form" th:object="${sticker}" th:action="@{'/stickers/edit/{id}'(id=*{id})}"
 					enctype="multipart/form-data" method="POST">
 					<div class="my-3">
-						<label for="text" class="form-label fw-bold">Add sticker</label>
+						<label for="text" class="form-label fw-bold">Edit Sticker</label>
 						<textarea name="text" class="form-control" id="text" rows="5" required minlength="2"
 							maxlength="30000" th:field="*{text}"></textarea>
 					</div>
