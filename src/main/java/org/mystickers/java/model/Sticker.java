@@ -23,7 +23,7 @@ public class Sticker {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	
-	@Size(min = 2, max = 30000)
+	@Size(min = 2, max = 50000)
 	@Column(name = "text", nullable = false, columnDefinition = "text")
 	private String text;
 	
